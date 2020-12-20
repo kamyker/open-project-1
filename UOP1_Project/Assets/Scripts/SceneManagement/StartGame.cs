@@ -1,17 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// This class contains the function to call when play button is pressed
 /// </summary>
 
-public class StartGame : MonoBehaviour
+public class StartGame : MonoBehaviourWithEvents<StartGame>
 {
-	public LoadEventChannelSO onPlayButtonPress;
+	// public LoadEventChannelSO onPlayButtonPress;
 	public GameSceneSO[] locationsToLoad;
 	public bool showLoadScreen;
 
-	public void OnPlayButtonPress()
+	public EventChannel<GameSceneSO[], bool> OnPlayButtonPress;
+
+	void Awake()
 	{
-		onPlayButtonPress.RaiseEvent(locationsToLoad, showLoadScreen);
+		GetComponent<Button>().onClick.AddListener(() => OnPlayButtonPress.Invoke(locationsToLoad, showLoadScreen));
 	}
 }
