@@ -21,10 +21,6 @@ public class LocationLoader : MonoBehaviour
 	[SerializeField] private GameObject _loadingInterface = default;
 	[SerializeField] private Image _loadingProgressBar = default;
 
-	[Header("Load Event")]
-	//The load event we are listening to
-	[SerializeField] private LoadEventChannelSO _loadEventChannel = default;
-
 	private List<AsyncOperation> _scenesToLoadAsyncOperations = new List<AsyncOperation>();
 	private List<Scene> _scenesToUnload = new List<Scene>();
 	private GameSceneSO _activeScene; // The scene we want to set as active (for lighting/skybox)
@@ -33,12 +29,14 @@ public class LocationLoader : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_loadEventChannel.OnLoadingRequested += LoadScenes;
+		LocationExit.Enabled += exit => exit.Entered.AddListener(LoadScenes);
+		StartGame.Enabled += start => start.OnPlayButtonPress.AddListener(LoadScenes);
 	}
 
 	private void OnDisable()
 	{
-		_loadEventChannel.OnLoadingRequested -= LoadScenes;
+		LocationExit.Disabled += exit => exit.Entered.RemoveListener(LoadScenes);
+		StartGame.Disabled += start => start.OnPlayButtonPress.RemoveListener(LoadScenes);
 	}
 
 	private void Start()

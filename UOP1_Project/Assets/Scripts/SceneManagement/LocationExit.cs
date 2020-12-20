@@ -4,20 +4,19 @@
 /// This class goes on a trigger which, when entered, sends the player to another Location
 /// </summary>
 
-public class LocationExit : MonoBehaviour
+public class LocationExit : MonoBehaviourWithEvents<LocationExit>
 {
 	[Header("Loading settings")]
 	[SerializeField] private GameSceneSO[] _locationsToLoad = default;
 	[SerializeField] private bool _showLoadScreen = default;
 
-	[Header("Broadcasting on")]
-	[SerializeField] private LoadEventChannelSO _locationExitLoadChannel = default;
+	public EventChannel<GameSceneSO[], bool> Entered;
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
-			_locationExitLoadChannel.RaiseEvent(_locationsToLoad, _showLoadScreen);
+			Entered.Invoke(_locationsToLoad, _showLoadScreen);
 		}
 	}
 }
