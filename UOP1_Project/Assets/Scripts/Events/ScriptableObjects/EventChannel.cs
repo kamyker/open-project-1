@@ -26,7 +26,7 @@ using UnityEngine.Events;
 // 	}
 // }
 
-public struct EventChannel<T1,T2>
+public struct EventChannel<T1, T2>
 {
 	public Action<T1, T2> OnRaised;
 
@@ -39,8 +39,8 @@ public struct EventChannel<T1,T2>
 		else
 		{
 			Debug.LogWarning("EventChannel was requested, but nobody picked it up." +
-			                 "Check why noone is listening to this channel, " +
-			                 "and make sure it's listening on this OnRaised event.");
+							 "Check why noone is listening to this channel, " +
+							 "and make sure it's listening on this OnRaised event.");
 		}
 	}
 
